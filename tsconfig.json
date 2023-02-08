@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+      "esModuleInterop": true,
+      "lib": ["es2017"],
+      "moduleResolution": "node",
+      "module": "commonJS",
+      "outDir": "./lambdas/dist",
+      "strict": false,
+      "target": "es2017",
+      "types": ["node"],
+      "typeRoots": ["@types", "node_modules/@types", "../node_modules/@types"]
+  },
+  "include": ["./lambdas/**/*"],
+  "exclude": ["./lambdas/**/*.spec.ts"]
+}

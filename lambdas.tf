@@ -39,8 +39,8 @@ resource "aws_iam_role_policy" "dynamodb-lambda-policy" {
 
 # Lambdas
 data "archive_file" "create-archive" {
-  source_file = "lambdas/create.js"
-  output_path = "lambdas/create.zip"
+  source_file = "lambdas/dist/create.js"
+  output_path = "lambdas/dist/create.zip"
   type        = "zip"
 }
 
@@ -54,10 +54,10 @@ resource "aws_lambda_function" "create" {
   timeout       = 10
   runtime       = "nodejs14.x"
   architectures = ["arm64"]
-  handler       = "lambdas/create.handler"
+  handler       = "lambdas/dist/create.handler"
   function_name = "create"
   role          = aws_iam_role.iam_for_lambda.arn
-  filename      = "lambdas/create.zip"
+  filename      = "lambdas/dist/create.zip"
 }
 
 resource "aws_lambda_permission" "api_create" {
