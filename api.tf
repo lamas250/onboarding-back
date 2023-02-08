@@ -1,11 +1,16 @@
 resource "aws_apigatewayv2_api" "this" {
   name          = "onboarding-api"
   protocol_type = "HTTP"
+  cors_configuration {
+    allow_headers = ["content-type", "x-amz-date", "authorization", "x-api-key", "x-amz-security-token", "x-amz-user-agent"]
+    allow_methods = ["*"]
+    allow_origins = ["*"]
+  }
 }
 
 resource "aws_apigatewayv2_stage" "this" {
   api_id      = aws_apigatewayv2_api.this.id
-  name        = "$default"
+  name        = "prod"
   auto_deploy = true
 }
 

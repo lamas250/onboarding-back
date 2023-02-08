@@ -1,8 +1,9 @@
 const AWS = require("aws-sdk"); 
 const crypto = require('crypto');
-const ONBOARDING_TABLE = process.env.ONBOARDING_TABLE; 
+let ONBOARDING_TABLE = process.env.ONBOARDING_TABLE; 
 
 const documentClient = new AWS.DynamoDB.DocumentClient();
+
 
 module.exports.handler = async (event, context) => {
 	try{
@@ -34,9 +35,9 @@ module.exports.handler = async (event, context) => {
 		  
 		  await documentClient
 		  .put({
-				  TableName: ONBOARDING_TABLE,
-				  Item: newItem,
-				  })
+				TableName: ONBOARDING_TABLE,
+				Item: newItem,
+			})
 		  .promise();
 	  
 		  return {
@@ -46,7 +47,8 @@ module.exports.handler = async (event, context) => {
 	} catch(err){
 		return {
 			statusCode: 500,
-			body: "Internal server error"
+			// body: "Internal server error"
+			body: err
 		};
 	}
 };
