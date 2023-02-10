@@ -1,4 +1,4 @@
-const isApiGatewayResponse = response => {
+const isApiGatewayResponse = (response : any) => {
     const {body, statusCode} = response;
 
     if(!body || !statusCode) return false;
@@ -8,6 +8,6 @@ const isApiGatewayResponse = response => {
     return true;
 }
 
-module.exports = {
+export default {
     isApiGatewayResponse
 }

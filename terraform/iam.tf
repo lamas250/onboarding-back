@@ -1,4 +1,3 @@
-# Role for Lambdas
 resource "aws_iam_role" "iam_for_lambda" {
   name = "iam_for_lambda"
 
@@ -21,6 +20,7 @@ resource "aws_iam_role_policy_attachment" "lambda_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+
 resource "aws_iam_role_policy" "dynamodb-lambda-policy" {
   name = "dynamodb_lambda_policy"
   role = aws_iam_role.iam_for_lambda.id
@@ -36,33 +36,28 @@ resource "aws_iam_role_policy" "dynamodb-lambda-policy" {
   })
 }
 
-
-# Lambdas
-data "archive_file" "create-archive" {
-  source_file = "lambdas/dist/create.js"
-  output_path = "lambdas/dist/create.zip"
-  type        = "zip"
-}
-
-resource "aws_lambda_function" "create" {
-  environment {
-    variables = {
-      ONBOARDING_TABLE = aws_dynamodb_table.onboarding_table.name
-    }
+# Policy para liberar cloudwatch
+data "aws_iam_policy_document" "create_logs_cloudwatch" {
+  statement {
+    sid       = "AllowCreatingLogGroups"
+    effect    = "Allow"
+    resources = ["arn:aws:logs:*:*"]
+    actions   = ["logs:CreateLogGroup"]
   }
-  memory_size   = "128"
-  timeout       = 10
-  runtime       = "nodejs14.x"
-  architectures = ["arm64"]
-  handler       = "lambdas/dist/create.handler"
-  function_name = "create"
-  role          = aws_iam_role.iam_for_lambda.arn
-  filename      = "lambdas/dist/create.zip"
+
+  statement {
+    sid       = "AllowWritingLogs"
+    effect    = "Allow"
+    resources = ["arn:aws:logs:*:*:log-group:/aws/lambda/*:*"]
+    actions = [
+      "log:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+  }
 }
 
-resource "aws_lambda_permission" "api_create" {
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.create.arn
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:us-east-1:376671595923:*/*"
+resource "aws_iam_role_policy" "lambda_policy_logs" {
+  name   = "lambda_policy_logs"
+  role   = aws_iam_role.iam_for_lambda.id
+  policy = data.aws_iam_policy_document.create_logs_cloudwatch.json
 }

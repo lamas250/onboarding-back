@@ -1,15 +1,23 @@
 {
   "compilerOptions": {
       "esModuleInterop": true,
-      "lib": ["es2017"],
+      "lib": ["es2019"],
       "moduleResolution": "node",
       "module": "commonJS",
       "outDir": "./lambdas/dist",
-      "strict": false,
-      "target": "es2017",
-      "types": ["node"],
-      "typeRoots": ["@types", "node_modules/@types", "../node_modules/@types"]
+      "strict": true,
+      "target": "es2019",
+      "types": ["jest","node"],
+      "allowJs": true,
+      "allowSyntheticDefaultImports": true
   },
-  "include": ["./lambdas/**/*"],
-  "exclude": ["./lambdas/**/*.spec.ts"]
+  "exclude": [
+    "node_modules",
+    "lambdas/dist",
+    "lambdas/tests"
+  ],
+  "include": [
+    "lambdas/**/*",
+    "jest.config.js"
+  ]
 }

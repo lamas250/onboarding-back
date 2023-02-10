@@ -1,3 +1,4 @@
+
 const APIGatewayRequest = ({
     body,
     method,
@@ -5,6 +6,13 @@ const APIGatewayRequest = ({
     queryStringObject,
     pathParametersObject,
     stageVariables = null,
+}: {
+    body: any,
+    method: any,
+    path: any,
+    queryStringObject: any,
+    pathParametersObject: any,
+    stageVariables: any
 }) => {
     const request = {
         body: body ? JSON.stringify(body) : null,
@@ -49,4 +57,4 @@ const APIGatewayRequest = ({
     return request;
 };
 
-module.exports = APIGatewayRequest;
+export default APIGatewayRequest;
