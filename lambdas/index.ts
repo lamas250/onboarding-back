@@ -45,3 +45,19 @@ export const get = async (event: APIGatewayEvent, context?: Context): Promise<AP
 		throw new Error(err);
 	}
 };
+
+export const destroy = async (event: APIGatewayEvent, context?: Context): Promise<APIGatewayProxyResult> => {
+	try{
+		const { id }  = JSON.parse(event.body!);
+		console.log('IDDD', id);
+		await repository.destroy(id);
+
+		return {
+			statusCode: 200,
+			body: JSON.stringify('Success destroy')
+		};
+	} catch(err: any){
+		console.log(err);
+		throw new Error(err);
+	}
+};

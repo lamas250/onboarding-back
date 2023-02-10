@@ -60,3 +60,31 @@ resource "aws_lambda_permission" "api_get" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "arn:aws:execute-api:us-east-1:376671595923:*/*"
 }
+
+resource "aws_lambda_function" "destroy" {
+  environment {
+    variables = {
+      ONBOARDING_TABLE = aws_dynamodb_table.onboarding_table.name
+    }
+  }
+  function_name = "destroy"
+  handler       = "index.destroy"
+  runtime       = "nodejs14.x"
+  architectures = ["arm64"]
+  role          = aws_iam_role.iam_for_lambda.arn
+
+  filename         = data.archive_file.api-archive.output_path
+  source_code_hash = data.archive_file.api-archive.output_base64sha256
+
+  memory_size = "128"
+  timeout     = 10
+
+  layers = [aws_lambda_layer_version.joi.arn]
+}
+
+resource "aws_lambda_permission" "api_destroy" {
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.destroy.arn
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "arn:aws:execute-api:us-east-1:376671595923:*/*"
+}

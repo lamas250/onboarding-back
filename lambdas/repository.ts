@@ -49,8 +49,20 @@ const getAll = async () => {
     return items;
 }
 
+const destroy = async (id: string) => {
+    const params = {
+        TableName: ONBOARDING_TABLE,
+        Key: {
+            id: id
+        }
+    }
+
+    await documentClient.delete(params).promise();
+}
+
 export default {
     saveItem,
-    getAll
+    getAll,
+    destroy
 }
 
