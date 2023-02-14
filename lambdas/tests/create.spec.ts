@@ -21,19 +21,18 @@ describe('create file integrations tests', () => {
         expect(validators.isApiGatewayResponse(res)).toBe(true);
     })
 
-    // test('should return 200 with correct params', async () => {
-    //     const event = eventGenerator({
-    //         body: {
-    //             tag: 'valid-tag',
-    //             value: 10,
-    //             type: 'valid-type',
-    //         }
-    //     } as any)
+    test('should return 200 with correct params', async () => {
+        const event = eventGenerator({
+            body: {
+                tag: 'valid-tag',
+                value: 10,
+                type: 'valid-type',
+            }
+        } as any)
 
-    //     const res = await lambdas.create(event as any);
-    //     console.log(res);
-    //     expect(res.statusCode).toBe(200);
-    // })
+        const res = await lambdas.create(event as any);
+        expect(res.statusCode).toBe(200);
+    })
 })
 
 

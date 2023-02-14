@@ -56,6 +56,6 @@ resource "aws_apigatewayv2_integration" "onboarding_destroy" {
 
 resource "aws_apigatewayv2_route" "onboarding_destroy" {
   api_id    = aws_apigatewayv2_api.this.id
-  route_key = "DELETE /v1/onboarding"
+  route_key = "DELETE /v1/onboarding/{id}"
   target    = "integrations/${aws_apigatewayv2_integration.onboarding_destroy.id}"
 }

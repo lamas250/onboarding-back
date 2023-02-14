@@ -3,7 +3,7 @@ import crypto from 'crypto';
 
 const ONBOARDING_TABLE = process.env.ONBOARDING_TABLE ? process.env.ONBOARDING_TABLE : 'onboarding-table'; 
 
-const documentClient = new AWS.DynamoDB.DocumentClient();
+const documentClient = new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' });
 
 interface ICreateOnboardingData {
     tag: string,

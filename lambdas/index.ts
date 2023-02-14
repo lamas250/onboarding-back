@@ -48,8 +48,15 @@ export const get = async (event: APIGatewayEvent, context?: Context): Promise<AP
 
 export const destroy = async (event: APIGatewayEvent, context?: Context): Promise<APIGatewayProxyResult> => {
 	try{
-		const { id }  = JSON.parse(event.body!);
-		console.log('IDDD', id);
+		const { id } = event.pathParameters!;
+		
+		if(!id){
+			return {
+				statusCode: 400,
+				body: JSON.stringify('Id not provided')
+			};
+		}
+
 		await repository.destroy(id);
 
 		return {
